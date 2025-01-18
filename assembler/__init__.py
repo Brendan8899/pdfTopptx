@@ -26,7 +26,6 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
     isAddText = False
     isAddImage = False
     for contentObject in contentObjectList:
-
         if (currentPage != contentObject["pageNumber"]): #update page number
             slide = prs.slides.add_slide(titleSlideLayout)
             slideShape = slide.shapes 
@@ -37,6 +36,7 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
             tf.word_wrap  = True
             isAddText = False
             isAddImage = False
+            graphic_frame = None
             
         if contentObject["contentType"] == "text":
             isAddText = True

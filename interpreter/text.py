@@ -25,6 +25,8 @@ def createText(layout_object: LTTextBox, pageNumber: int) -> Text:
     
 def handleFilterRequestText(width: float, height: float):
     def handler(contentText):
+        if contentText["contentType"] != "text":
+            return True
         return contentText["coordinates"][1] < height - config.IGNORE_TOP and contentText["coordinates"][1] > config.IGNORE_BOTTOM
 
     return handler
