@@ -16,6 +16,12 @@ def ensureDir(outputDir):
 def interpret(layout_object):
     if (isImage(layout_object)):
         writeImage(layout_object, "output")
+    
+    '''
+    if isinstance(layout_object, pdfminer.layout.LTTextBox):
+        x, y, text = layout_object.bbox[0], layout_object.bbox[3], layout_object.get_text()
+    '''
+    
     # recursively parse the layout objects
     if (isinstance(layout_object, pdfminer.layout.LTPage) or isinstance(layout_object, pdfminer.layout.LTContainer)):
         for child in layout_object:
