@@ -10,6 +10,7 @@ import os
 
 from interpreter.image import isImage, createImage
 from interpreter.text import isText, createText
+from interpreter.table import extractedTableByPage, createTable
 import config
 
 def interpret(layout_object, pageNumber: int, contentObjectList):
@@ -36,7 +37,12 @@ def interpretMain(inputFile: str):
     interpreter = PDFPageInterpreter(rsrcmgr, device)
     pages = PDFPage.get_pages(fp)
     contentObjectList = []
+    extractedTables = extractedTableByPage(inputFile)
     for pageNumber, page in enumerate(pages):
+        # list(map(extractedTables[pageNumber]))
+        tablesInPage = extractedTables[pageNumber]
+        for j in range(len(tablesInPage)):
+            contentObjectList.append(createTable(tablesInPage[j], j, pageNumber))
         interpreter.process_page(page)
         layout = device.get_result()
         for lobj in layout:

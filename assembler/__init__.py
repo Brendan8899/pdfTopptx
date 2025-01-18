@@ -1,14 +1,14 @@
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-from interpreter.text import isText
-import pptx
 from pptx import Presentation
+from pptx.util import Inches
 # ContentObject := Text | Image | ...
 # Assume that objectList is sorted by page & coordinates
 
 # Version 1
 def assemble(contentObjectList, outputFileName): # [] ContentObject
+    contentObjectList.sort(key = lambda a: a["pageNumber"])
     prs = Presentation()
     titleSlideLayout = prs.slide_layouts[1] 
     currentPage = -1
@@ -26,5 +26,19 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
         if contentObject["contentType"] == "text":
             bodyShape.text_frame.text += contentObject["content"]
         if contentObject["contentType"] == "image":
-            slideShape.add_picture(contentObject["imagePath"], pptx.util.Inches(0.5), pptx.util.Inches(1.75))
+            slideShape.add_picture(contentObject["imagePath"], Inches(0.5), Inches(1.75))
+        if contentObject["contentType"] == "table":
+            rows, columns = contentObject["dataFrame"].shape
+            print("Reaches here")
+            print(contentObject["dataFrame"].shape)
+            x, y, cx, cy = Inches(2), Inches(2), Inches(4), Inches(1.5)
+            # Add table to the slide
+            graphic_frame = slide.shapes.add_table(rows, columns, x, y, cx, cy)
+            table = graphic_frame.table
+
+            # Populate the table with DataFrame values
+            for i in range(rows):
+                for j in range(columns):
+                    cell = table.cell(i, j)
+                    cell.text = str(contentObject["dataFrame"].iat[i, j])
     prs.save(outputFileName)
