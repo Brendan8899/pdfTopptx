@@ -24,6 +24,7 @@ def extractTablePerFile(pdfPage):
 
 def createTable(dataframe, ordering, pageNumber):
     return {
+        "coordinates": (0,0,0,0),
         "dataFrame": dataframe,
         "ordering": ordering,
         "pageNumber": pageNumber,

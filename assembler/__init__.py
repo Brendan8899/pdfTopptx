@@ -2,21 +2,16 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from pptx import Presentation
-
-from pptx.util import Inches, Pt
-from pptx.dml.color import RGBColor
-from pptx.enum.text import MSO_AUTO_SIZE
+from pptx.util import Inches
 import config
 import pptx
-from interpreter.table import handleFilterRequest
 # ContentObject := Text | Image | ...
 # Assume that objectList is sorted by page & coordinates
 
-from assembler.utils import makeParaBulletPointed
 from assembler.header import addHeader
 # Version 1
 def assemble(contentObjectList, outputFileName): # [] ContentObject
-    contentObjectList.sort(key = lambda a: a["pageNumber"])
+    
     prs = Presentation()
     titleSlideLayout = prs.slide_layouts[6] # blank
     currentPage = -1
@@ -36,7 +31,6 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
             
         if contentObject["contentType"] == "text":
             p = tf.add_paragraph()
-            makeParaBulletPointed(p)
             p.level = 0
             p.text = contentObject["content"]
             p.font.name = config.FONT_FAMILY
