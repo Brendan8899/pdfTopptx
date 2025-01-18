@@ -3,7 +3,7 @@ import pandas as pd
 from tabulate import tabulate
 
 def main():
-    with pdfplumber.open("HacknRoll.pdf") as pdf:
+    with pdfplumber.open("test/HacknRoll.pdf") as pdf:
         for page in pdf.pages:
             tables = extractTablePerFile(page)
             for table in tables:
