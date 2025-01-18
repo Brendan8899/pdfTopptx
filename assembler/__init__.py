@@ -11,7 +11,6 @@ import pptx
 from assembler.header import addHeader
 # Version 1
 def assemble(contentObjectList, outputFileName): # [] ContentObject
-    
     prs = Presentation()
     titleSlideLayout = prs.slide_layouts[6] # blank
     currentPage = -1
@@ -39,7 +38,7 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
         if contentObject["contentType"] == "image":
             slideShape.add_picture(contentObject["imagePath"], width/4, height / 2, width / 2)
         if contentObject["contentType"] == "table":
-            rows, columns = contentObject["dataFrame"].shape
+            rows, columns = len(contentObject["dataFrame"]), len(contentObject["dataFrame"][0])
             x, y, cx, cy = Inches(2), Inches(2), Inches(4), Inches(1.5)
             # Add table to the slide
             graphic_frame = slide.shapes.add_table(rows, columns, x, y, cx, cy)
