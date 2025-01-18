@@ -2,6 +2,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import transformer.text
+import transformer.table
 import config
 
 class Transformer:
@@ -29,6 +30,8 @@ class Transformer:
                 self.transformedList.append(contentObject)
             
             if (contentObject["contentType"] == "table"):
+                if transformer.table.addTableToNextPage(self.contentObjects ,contentObject):
+                    self.offset += 1
                 contentObject["pageNumber"] += self.offset
                 self.transformedList.append(contentObject)
             self.index += 1

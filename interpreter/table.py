@@ -31,12 +31,8 @@ def createTable(dataframe, ordering, pageNumber):
 }
     
 def handleFilterRequest(contentObject):
-    print("Should Reach Here")
-    print(contentObject)
     if contentObject["contentType"] != "text":
         return True
-    print("Table Should Reach Here")
-    print(contentObject)
     textToProcess = contentObject["content"]
     pageNumber = contentObject["pageNumber"]
     three_d_lists = getTablesFromSpecifiedPage(pageNumber)
