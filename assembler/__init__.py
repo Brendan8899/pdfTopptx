@@ -22,13 +22,10 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
     height = prs.slide_height
     slideShape = None
     tf = None
-<<<<<<< HEAD
     
-=======
     # flags
     isAddText = False
     isAddImage = False
->>>>>>> cd2d604ddb4a398741cb0e3a93a0c0b4238479e0
     for contentObject in contentObjectList:
 
         if (currentPage != contentObject["pageNumber"]): #update page number
@@ -39,14 +36,8 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
             txBox = slideShape.add_textbox(width / 10, height / 6, 4 * width / 5, 0)
             tf = txBox.text_frame
             tf.word_wrap  = True
-<<<<<<< HEAD
-            graphic_frame = None
-=======
             isAddText = False
             isAddImage = False
-            
->>>>>>> cd2d604ddb4a398741cb0e3a93a0c0b4238479e0
-            
         
         if contentObject["contentType"] == "text":
             isAddText = True
