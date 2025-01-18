@@ -30,7 +30,7 @@ class Transformer:
         currentObject = originalObject
         pageReference = currentObject["pageNumber"]
         currentContent = formatContent(currentObject["content"]) 
-                
+        
         # Dark magic ✨
         while (self.peekTrail() or (self.matchTypeNext("text") and self.matchPageNumberNext(pageReference))):
             self.index += 1 # advance
@@ -38,6 +38,7 @@ class Transformer:
             # Check if it's the end of the sentence or not
             currentContent += " " + formatContent(currentObject["content"]) 
             
+
         return {
             "content": currentContent,
             "coordinates": originalObject["coordinates"], # for simplicity
@@ -67,10 +68,12 @@ class Transformer:
             if (contentObject["contentType"] == "image"):
                 contentObject["pageNumber"] +=  self.offset
                 self.transformedList.append(contentObject)
+                self.offset += 1
             
             if (contentObject["contentType"] == "table"):
                 contentObject["pageNumber"] += self.offset
                 self.transformedList.append(contentObject)
+                self.offset += 1
             self.index += 1
             
     def matchTypeNext(self, targetType: str) -> bool:

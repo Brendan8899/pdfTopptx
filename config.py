@@ -1,6 +1,6 @@
 from pptx.dml.color import RGBColor
-TITLE = "RUST"
-SUBTITLE = "A Type-safe programming language"
+TITLE = "PyPI Installation Guide"
+SUBTITLE = "Basic instruction"
 
 INPUT_FILENAME = "test/simple.pdf"
 OUTPUT_FILENAME = "output.pptx"
@@ -10,6 +10,7 @@ FONT_FAMILY = "Inter"
 PARAGRAPH_FONT_SIZE = 18
 MAX_WORD_PER_PAGE_DEFAULT = 70
 MAX_WORD_PER_PAGE_WITH_IMAGE = 30
-HEADER_COLOR = RGBColor(0, 0, 0)
+HEADER_COLOR = RGBColor(0, 0, 255)
 
-PADDING_TOP = 50
+IGNORE_TOP = 50
+IGNORE_BOTTOM = 0

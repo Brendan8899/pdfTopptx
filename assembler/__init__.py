@@ -21,6 +21,9 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
     height = prs.slide_height
     slideShape = None
     tf = None
+    # flags
+    isAddText = False
+    isAddImage = False
     for contentObject in contentObjectList:
         if (currentPage != contentObject["pageNumber"]): #update page number
             slide = prs.slides.add_slide(titleSlideLayout)
@@ -30,9 +33,12 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
             txBox = slideShape.add_textbox(width / 10, height / 6, 4 * width / 5, 0)
             tf = txBox.text_frame
             tf.word_wrap  = True
+            isAddText = False
+            isAddImage = False
             
-            
+        
         if contentObject["contentType"] == "text":
+            isAddText = True
             for line in contentObject["content"].strip().replace('\n','@(br)').split('@(br)'):
                 if (line != ''):
                     p = tf.add_paragraph()
@@ -43,9 +49,14 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
                     p.font.size = Pt(config.PARAGRAPH_FONT_SIZE)
                     p.space_after = Pt(config.PARAGRAPH_FONT_SIZE)
 
+
         if contentObject["contentType"] == "image":
-            slideShape.add_picture(contentObject["imagePath"], width / 4, 3 * height / 5, None, height / 5)
-            
+            isAddImage = True
+            if (isAddText):
+                slideShape.add_picture(contentObject["imagePath"], width / 4, 3 * height / 5, None, height / 5)
+            else:
+                slideShape.add_picture(contentObject["imagePath"], width / 4, height / 4, None, height / 2)
+                
         if contentObject["contentType"] == "table":
             rows, columns = len(contentObject["dataFrame"]), len(contentObject["dataFrame"][0])
             x, y, cx, cy = Inches(2), Inches(2), Inches(4), Inches(1.5)
