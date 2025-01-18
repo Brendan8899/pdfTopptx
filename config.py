@@ -1,5 +1,7 @@
 from pptx.dml.color import RGBColor
 TITLE = "RUST"
+SUBTITLE = "A Type-safe programming language"
+
 INPUT_FILENAME = "test/hacknrollSimple.pdf"
 OUTPUT_FILENAME = "output.pptx"
 
@@ -12,3 +14,4 @@ HEADER_COLOR = RGBColor(0, 0, 0)
 MAX_TABLE_LENGTH_CM = 25
 MAX_TABLE_HEIGHT_CM = 15
 INCH_TO_CM_MULTIPLIER = 914400/360000
+PADDING_TOP = 50

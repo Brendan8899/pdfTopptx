@@ -30,7 +30,7 @@ def createTable(dataframe, ordering, pageNumber):
         "contentType": "table"
 }
     
-def handleFilterRequest(contentObject):
+def handleFilterRequestTable(contentObject):
     if contentObject["contentType"] != "text":
         return True
     textToProcess = contentObject["content"]
@@ -51,7 +51,7 @@ def getTableStringRepresentation(three_d_lists):
         for i in range(len(two_d_list[0])):
             finalString = ""
             for j in range(len(two_d_list)):
-                finalString += two_d_list[j][i] + " "
+                finalString += " " + two_d_list[j][i] + " "
             finalString = finalString.strip()
             listOfFinalString.append(finalString)
     return listOfFinalString

@@ -7,8 +7,8 @@ from pdfminer.converter import PDFPageAggregator
 
 
 from interpreter.image import isImage, createImage
-from interpreter.text import isText, createText
-from interpreter.table import extractedTableByPage, createTable, handleFilterRequest
+from interpreter.text import isText, createText, handleFilterRequestText
+from interpreter.table import extractedTableByPage, createTable, handleFilterRequestTable
 import config
 
 def interpret(layout_object, pageNumber: int, contentObjectList):
@@ -44,7 +44,8 @@ def interpretMain(inputFile: str):
         layout = device.get_result()
         for lobj in layout:
             interpret(lobj, pageNumber, contentObjectList)
-        contentObjectList.sort(key = lambda a: ( a["pageNumber"], -a["coordinates"][1]))
-    contentObjectList = list(filter(handleFilterRequest, contentObjectList))
+        contentObjectList.sort(key = lambda a: ( a["pageNumber"], - a["coordinates"][1]))
+        contentObjectList = list(filter(handleFilterRequestText(layout.width, layout.height), contentObjectList))
+    contentObjectList = list(filter(handleFilterRequestTable, contentObjectList))
     return contentObjectList
         
