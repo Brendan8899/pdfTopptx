@@ -23,7 +23,7 @@ class Transformer:
             if (payload[-1] != '.' or not payload[0].isalnum()):
                 return "@(br)" + payload
             else:
-                return  payload
+                return " " + payload
                 
         originalObject = self.contentObjects[self.index]
         currentObject = originalObject
@@ -31,7 +31,7 @@ class Transformer:
         currentContent = formatContent(currentObject["content"]) 
                 
         # Dark magic ✨
-        while (self.peekTrail() and self.matchPageNumberNext(pageReference)):
+        while (self.peekTrail() or (self.matchTypeNext("text") and self.matchPageNumberNext(pageReference))):
             self.index += 1 # advance
             currentObject = self.contentObjects[self.index]
             # Check if it's the end of the sentence or not
@@ -83,7 +83,7 @@ class Transformer:
             return self.contentObjects[self.index + 1]["pageNumber"] == targetPage
         
     def peekTrail(self) -> bool: # handling trailing sentences (e.g. I have [new page] a pen.)
-        return self.matchTypeNext("text") and self.contentObjects[self.index]["content"][-1] == "."
+        return self.matchTypeNext("text") and self.contentObjects[self.index]["content"][-1] != "."
     
     def get(self):
         return self.transformedList
