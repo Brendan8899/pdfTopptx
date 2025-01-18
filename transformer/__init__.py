@@ -19,11 +19,12 @@ class Transformer:
         3. encounter different original page
         '''
         def formatContent(payload: str):
-            payload = payload.strip()
             if (payload[-1] != '.' or not payload[0].isalnum()):
                 return "@(br)" + payload
+            elif (payload[-1] == '.'):
+                return payload + " "
             else:
-                return " " + payload
+                return  payload
                 
         originalObject = self.contentObjects[self.index]
         currentObject = originalObject
@@ -35,7 +36,7 @@ class Transformer:
             self.index += 1 # advance
             currentObject = self.contentObjects[self.index]
             # Check if it's the end of the sentence or not
-            currentContent += formatContent(currentObject["content"]) 
+            currentContent += " " + formatContent(currentObject["content"]) 
             
         return {
             "content": currentContent,
@@ -46,12 +47,13 @@ class Transformer:
 
     
     def run(self):
-        while (self.index < len(self.contentObjects)):
+        while (self.index < len(self.contentObjects)): # todo: fix indexing
             contentObject = self.contentObjects[self.index]
             if (contentObject["contentType"] == "text"):
                 maxWordPerPage = config.MAX_WORD_PER_PAGE_DEFAULT
                 if self.matchTypeNext("image"):
                     maxWordPerPage =  config.MAX_WORD_PER_PAGE_WITH_IMAGE
+
                 # urge to consume more texts
                 else:
                     contentObject = self.consumeText()
@@ -59,7 +61,8 @@ class Transformer:
                 results, offset = transformer.text.chopTextObject(contentObject, self.offset, maxWordPerPage)
                 for result in results: 
                     self.transformedList.append(result)
-                self.offset += offset
+                    
+                self.offset += offset 
 
             if (contentObject["contentType"] == "image"):
                 contentObject["pageNumber"] +=  self.offset

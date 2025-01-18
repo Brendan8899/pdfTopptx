@@ -33,14 +33,15 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
             
             
         if contentObject["contentType"] == "text":
-            for line in  contentObject["content"].replace('\n','@(br)').split('@(br)'):
-                p = tf.add_paragraph()
-                p.text = line.strip()
-                p.level = 0
-                p.font.size = Pt(12)
-                p.font.name = config.FONT_FAMILY
-                p.font.size = Pt(config.PARAGRAPH_FONT_SIZE)
-                p.space_after = Pt(config.PARAGRAPH_FONT_SIZE)
+            for line in contentObject["content"].strip().replace('\n','@(br)').split('@(br)'):
+                if (line != ''):
+                    p = tf.add_paragraph()
+                    p.text = ' '.join(line.split()).replace('.', '. ').strip()
+                    p.level = 0
+                    p.font.size = Pt(12)
+                    p.font.name = config.FONT_FAMILY
+                    p.font.size = Pt(config.PARAGRAPH_FONT_SIZE)
+                    p.space_after = Pt(config.PARAGRAPH_FONT_SIZE)
 
         if contentObject["contentType"] == "image":
             slideShape.add_picture(contentObject["imagePath"], width / 4, 3 * height / 5, None, height / 5)
