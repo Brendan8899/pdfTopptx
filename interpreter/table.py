@@ -12,7 +12,7 @@ def extractedTableByPage(inputFile):
                 if (len(tables[j]) > 1 and tables[j][0][0] != "" and tables[j][0][0] != None):
                     df = pd.DataFrame(tables[j], columns=tables[j][0])
                     dictionary[i].append(df)
-                    print(tabulate(df, headers='keys', tablefmt='grid'))
+                    # print(tabulate(df, headers='keys', tablefmt='grid'))
                 else:
                     pass
     return dictionary

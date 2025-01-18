@@ -1,9 +1,10 @@
+import pdfminer
 from pdfminer.layout import LAParams, LTFigure
 from pdfminer.pdfpage import PDFPage
 from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.converter import PDFPageAggregator
-import pdfminer
+
 
 from pdfminer.high_level import extract_pages
 import os
@@ -17,7 +18,7 @@ def interpret(layout_object, pageNumber: int, contentObjectList):
     outputDir = config.TMP_DIRECTORY
     if (isImage(layout_object)):
         contentObjectList.append(createImage(layout_object, outputDir, pageNumber))
-    if (isText(layout_object)):
+    elif (isText(layout_object)):
         contentObjectList.append(createText(layout_object, pageNumber))
         
     # recursively parse the layout objects
@@ -47,6 +48,6 @@ def interpretMain(inputFile: str):
         layout = device.get_result()
         for lobj in layout:
             interpret(lobj, pageNumber, contentObjectList)
-    
+    contentObjectList.sort(key = lambda a: (a["pageNumber"], a["coordinates"][1]))
     return contentObjectList
         
