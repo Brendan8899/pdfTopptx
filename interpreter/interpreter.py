@@ -4,35 +4,28 @@ from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.converter import PDFPageAggregator
 import pdfminer
-from pdfminer.image import ImageWriter
+
 from pdfminer.high_level import extract_pages
 import os
+from image import writeImage, isImage
 
 def ensureDir(outputDir):
     if not os.path.exists(outputDir): 
         os.makedirs(outputDir) 
 
-def getImage(layout_object):
-    if isinstance(layout_object, pdfminer.layout.LTImage):
-        return layout_object
-    if isinstance(layout_object, pdfminer.layout.LTContainer):
+def interpret(layout_object):
+    if (isImage(layout_object)):
+        writeImage(layout_object, "output")
+    # recursively parse the layout objects
+    if (isinstance(layout_object, pdfminer.layout.LTPage) or isinstance(layout_object, pdfminer.layout.LTContainer)):
         for child in layout_object:
-            return getImage(child)
+            return interpret(child)
     else:
         return None
 
 
-def compileImage(page: pdfminer.layout.LTPage, outputDir: str):
-    ensureDir(outputDir)  
-    images = list(filter(bool, map(getImage, page)))
-    iw = ImageWriter(outputDir)
-    for image in images:
-        iw.export_image(image)
-
-
-
-
-def compile(inputFile: str):
+# read input pdf file and convert to PDF Miner layouts
+def interpretMain(inputFile: str):
     fp = open(inputFile, 'rb')
     rsrcmgr = PDFResourceManager()
     laparams = LAParams()
@@ -43,6 +36,7 @@ def compile(inputFile: str):
     for page in pages:
         interpreter.process_page(page)
         layout = device.get_result()
-        compileImage(layout, "output")
+        for lobj in layout:
+            interpret(lobj)
         
-compile("test/P5 CW Quesitons.pdf")
+interpretMain("test/P5 CW Quesitons.pdf")
