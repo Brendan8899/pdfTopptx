@@ -8,6 +8,7 @@ PDFtoPPTX is a Python tool that converts PDF documents into editable PowerPoint 
 ### Running from source
 ```bash
 git clone https://github.com/Brendan8899/pdfTopptx.git
+cd pdfTopptx
 pip install -r requirements.txt
 ```
 ## Example Usage
