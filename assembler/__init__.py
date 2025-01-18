@@ -2,7 +2,8 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from pptx import Presentation
-from pptx.util import Inches, Pt
+from pptx.util import Inches, Pt, Centipoints
+from pptx.enum.text import PP_ALIGN, MSO_AUTO_SIZE
 import config
 import pptx
 # ContentObject := Text | Image | ...
@@ -24,21 +25,22 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
             slideShape = slide.shapes 
             addHeader(slideShape, width, height / 10)
             currentPage += 1
-            txBox = slideShape.add_textbox(width / 12, height / 8, 4 * width / 5, height)
+            txBox = slideShape.add_textbox(width / 10, height / 6, 4 * width / 5, 0)
             tf = txBox.text_frame
             tf.word_wrap  = True
             
+            
         if contentObject["contentType"] == "text":
             p = tf.add_paragraph()
-            
-            p.add_run()
+
             p.level = 0
             p.text = contentObject["content"]
             p.font.name = config.FONT_FAMILY
             p.font.size = Pt(config.PARAGRAPH_FONT_SIZE)
             p.space_after = Pt(config.PARAGRAPH_FONT_SIZE)
+            
 
         if contentObject["contentType"] == "image":
-            slideShape.add_picture(contentObject["imagePath"], width/4, height / 2, width / 4)
+            slideShape.add_picture(contentObject["imagePath"], width / 2, 3 * height / 5, width / 4)
 
     prs.save(outputFileName)
