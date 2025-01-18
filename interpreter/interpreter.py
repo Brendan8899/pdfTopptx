@@ -7,19 +7,23 @@ import pdfminer
 
 from pdfminer.high_level import extract_pages
 import os
-from image import writeImage, isImage
+from image import isImage, Image
+from text import isText, Text
 
 def ensureDir(outputDir):
     if not os.path.exists(outputDir): 
         os.makedirs(outputDir) 
 
-def interpret(layout_object):
+def interpret(layout_object, pageNumber: int):
     if (isImage(layout_object)):
-        writeImage(layout_object, "output")
+        print(Image(layout_object, pageNumber))
+    if (isText(layout_object)):
+        print(Text(layout_object, pageNumber))
+        
     # recursively parse the layout objects
     if (isinstance(layout_object, pdfminer.layout.LTPage) or isinstance(layout_object, pdfminer.layout.LTContainer)):
         for child in layout_object:
-            return interpret(child)
+            return interpret(child, pageNumber)
     else:
         return None
 
@@ -33,10 +37,10 @@ def interpretMain(inputFile: str):
     interpreter = PDFPageInterpreter(rsrcmgr, device)
     pages = PDFPage.get_pages(fp)
 
-    for page in pages:
+    for pageNumber, page in enumerate(pages):
         interpreter.process_page(page)
         layout = device.get_result()
         for lobj in layout:
-            interpret(lobj)
+            interpret(lobj, pageNumber)
         
 interpretMain("test/P5 CW Quesitons.pdf")
