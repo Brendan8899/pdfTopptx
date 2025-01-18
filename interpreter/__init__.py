@@ -50,6 +50,5 @@ def interpretMain(inputFile: str):
         contentObjectList.sort(key = lambda a: ( a["pageNumber"], - a["coordinates"][1]))
         contentObjectList = list(filter(handleFilterRequestText(layout.width, layout.height), contentObjectList))
     contentObjectList = list(filter(handleFilterRequestTable, contentObjectList))
-    print(contentObjectList)
     return contentObjectList
         
