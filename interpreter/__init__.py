@@ -44,7 +44,7 @@ def interpretMain(inputFile: str):
         layout = device.get_result()
         for lobj in layout:
             interpret(lobj, pageNumber, contentObjectList)
-    contentObjectList.sort(key = lambda a: (a["pageNumber"], a["coordinates"][1]))
+        contentObjectList.sort(key = lambda a: ( a["pageNumber"], -a["coordinates"][1]))
     contentObjectList = list(filter(handleFilterRequest, contentObjectList))
     print("content Object List ")
     print(contentObjectList)   
