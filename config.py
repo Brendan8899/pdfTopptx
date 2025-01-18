@@ -1,8 +1,8 @@
 from pptx.dml.color import RGBColor
-TITLE = "PyPI Installation Guide"
-SUBTITLE = "Basic instruction"
+TITLE = "CAT FRIENDLY GUIDE"
+SUBTITLE = "Make Your Cat Get Used To A New Environment"
 
-INPUT_FILENAME = "test/simple.pdf"
+INPUT_FILENAME = "test/cat.pdf"
 OUTPUT_FILENAME = "output.pptx"
 
 TMP_DIRECTORY = "tmp"

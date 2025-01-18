@@ -1,5 +1,5 @@
 from pptx import Presentation
-import config 
+import pdfTopptx.config  as config
 prs = Presentation()
 
 

@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from pptx import Presentation
 from pptx.util import Inches, Pt, Centipoints
 from pptx.enum.text import PP_ALIGN, MSO_AUTO_SIZE
-import config
+import pdfTopptx.config as config
 import pptx
 # ContentObject := Text | Image | ...
 # Assume that objectList is sorted by page & coordinates
@@ -36,6 +36,7 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
             isAddText = False
             isAddImage = False
             
+            
         
         if contentObject["contentType"] == "text":
             isAddText = True
@@ -56,6 +57,7 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
                 slideShape.add_picture(contentObject["imagePath"], width / 4, 3 * height / 5, None, height / 5)
             else:
                 slideShape.add_picture(contentObject["imagePath"], width / 4, height / 4, None, height / 2)
+                
                 
         if contentObject["contentType"] == "table":
             rows, columns = len(contentObject["dataFrame"]), len(contentObject["dataFrame"][0])

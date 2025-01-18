@@ -6,10 +6,10 @@ from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.converter import PDFPageAggregator
 
 
-from interpreter.image import isImage, createImage
-from interpreter.text import isText, createText, handleFilterRequestText
-from interpreter.table import extractedTableByPage, createTable, handleFilterRequestTable
-import config
+from pdfTopptx.interpreter.image import isImage, createImage
+from pdfTopptx.interpreter.text import isText, createText, handleFilterRequestText
+from pdfTopptx.interpreter.table import extractedTableByPage, createTable, handleFilterRequestTable
+import pdfTopptx.config as config
 
 def interpret(layout_object, pageNumber: int, contentObjectList):
     outputDir = config.TMP_DIRECTORY

@@ -1,7 +1,7 @@
 import pdfminer
 import typing
 from pdfminer.layout import LAParams, LTTextBox 
-import config
+import pdfTopptx.config as config
 
 
 class Text(typing.TypedDict):
