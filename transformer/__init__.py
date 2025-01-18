@@ -2,27 +2,48 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 import transformer.text
+import config
 
-# offsetBox is used to pass by reference
-def transform(contentObject, transformedList, offsetBox = [0]):
-    if (contentObject["contentType"] == "text"):
-        results, offset = transformer.text.chopTextObject(contentObject, offsetBox[0])
-        for result in results: 
-            transformedList.append(result)
-        offsetBox[0] += offset
+class Transformer:
+    def __init__(self):
+        self.offset = 0
+        self.transformedList = []
+    def load(self, contentObjects):
+        self.contentObjects = contentObjects
+        self.index = 0
+    def run(self):
+        while (self.index < len(self.contentObjects)):
+            contentObject = self.contentObjects[self.index]
+
+            if (contentObject["contentType"] == "text"):
+                maxWordPerPage = config.MAX_WORD_PER_PAGE_DEFAULT
+                if self.matchTypeNext("image"):
+                    maxWordPerPage =  config.MAX_WORD_PER_PAGE_WITH_IMAGE
+                results, offset = transformer.text.chopTextObject(contentObject, self.offset, maxWordPerPage)
+                for result in results: 
+                    self.transformedList.append(result)
+                self.offset += offset
+
+            if (contentObject["contentType"] == "image"):
+                contentObject["pageNumber"] +=  self.offset
+                self.transformedList.append(contentObject)
+                '''
+                if (self.matchTypeNext("text")):
+                    self.offset += 1
+                ''' 
+            self.index += 1
+            
+    def matchTypeNext(self, targetType: str) -> bool:
+        if (self.index + 1 >= len(self.contentObjects)):
+            return False
+        else:
+            return self.contentObjects[self.index + 1]["contentType"] == targetType
         
-    if (contentObject["contentType"] == "image"):
-        contentObject["pageNumber"] += offsetBox[0]
-        transformedList.append(contentObject)
-        offsetBox[0] += 1
-        # do absolutely nothing! 
-        
-    return transformedList
+    def get(self):
+        return self.transformedList
 
 def transformMain(contentObjects):
-    transformedList = []
-    offsetBox = [0]
-    for contentObject in contentObjects:
-        transform(contentObject, transformedList , offsetBox)
-    transformedList.reverse()
-    return transformedList    
+    transformer = Transformer()
+    transformer.load(contentObjects)
+    transformer.run()
+    return transformer.get()    

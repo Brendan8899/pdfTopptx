@@ -1,6 +1,8 @@
 import re, math
+import config 
 
-def chopText(text, maxWordPerPage = 30):
+
+def chopText(text, maxWordPerPage):
     wordCount = len(text.split())
     numberChunk = math.floor(wordCount / maxWordPerPage)
     wordCutOff = maxWordPerPage
@@ -23,8 +25,8 @@ def chopText(text, maxWordPerPage = 30):
         cumulatedSentence.append(' '.join(cumulatedTmp))
     return cumulatedSentence
 
-def chopTextObject(textObject, initialOffset = 0):
-    chopedSentence = chopText(textObject["content"])
+def chopTextObject(textObject, initialOffset = 0, maxWordPerPage = config.MAX_WORD_PER_PAGE_DEFAULT):
+    chopedSentence = chopText(textObject["content"], maxWordPerPage)
     offset = len(chopedSentence) 
     return [
     {
