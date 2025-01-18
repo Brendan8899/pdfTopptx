@@ -1,12 +1,13 @@
-from pdfminer.layout import LAParams, LTFigure
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
 from pdfminer.pdfinterp import PDFResourceManager
 from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.converter import PDFPageAggregator
 import pdfminer
-
-from pdfminer.high_level import extract_pages
-import os
 
 from interpreter.image import isImage, createImage
 from interpreter.text import isText, createText
