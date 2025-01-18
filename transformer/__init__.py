@@ -73,7 +73,7 @@ class Transformer:
             if (contentObject["contentType"] == "table"):
                 contentObject["pageNumber"] += self.offset
                 self.transformedList.append(contentObject)
-                self.offset += 1
+
             self.index += 1
             
     def matchTypeNext(self, targetType: str) -> bool:

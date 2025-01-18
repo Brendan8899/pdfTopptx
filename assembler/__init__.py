@@ -22,7 +22,6 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
     height = prs.slide_height
     slideShape = None
     tf = None
-    
     # flags
     isAddText = False
     isAddImage = False
@@ -38,7 +37,7 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
             tf.word_wrap  = True
             isAddText = False
             isAddImage = False
-        
+            
         if contentObject["contentType"] == "text":
             isAddText = True
             for line in contentObject["content"].strip().replace('\n','@(br)').split('@(br)'):
