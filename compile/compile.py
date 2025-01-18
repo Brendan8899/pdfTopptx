@@ -22,13 +22,15 @@ def getImage(layout_object):
         return None
 
 
-
 def compileImage(page: pdfminer.layout.LTPage, outputDir: str):
     ensureDir(outputDir)  
     images = list(filter(bool, map(getImage, page)))
     iw = ImageWriter(outputDir)
     for image in images:
         iw.export_image(image)
+
+
+
 
 def compile(inputFile: str):
     fp = open(inputFile, 'rb')
@@ -39,18 +41,8 @@ def compile(inputFile: str):
     pages = PDFPage.get_pages(fp)
 
     for page in pages:
-        print('Processing next page...')
         interpreter.process_page(page)
         layout = device.get_result()
         compileImage(layout, "output")
-        '''
-        for lobj in layout:
-            if isinstance(lobj, LTFigure):
-                extractedFigure = getImage(lobj)
-                print(extractedFigure)
-
-            if isinstance(lobj, LTTextBox):
-                x, y, text = lobj.bbox[0], lobj.bbox[3], lobj.get_text()
-                print('At %r is text: %s' % ((x, y), text))
-            '''
+        
 compile("test/P5 CW Quesitons.pdf")
