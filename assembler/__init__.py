@@ -10,9 +10,11 @@ import pptx
 # Assume that objectList is sorted by page & coordinates
 
 from assembler.header import addHeader
+from assembler.title import addFirstPage
 # Version 1
 def assemble(contentObjectList, outputFileName): # [] ContentObject
     prs = Presentation()
+    addFirstPage(prs)
     titleSlideLayout = prs.slide_layouts[6] # blank
     currentPage = -1
     width = prs.slide_width
@@ -31,18 +33,18 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
             
             
         if contentObject["contentType"] == "text":
-            p = tf.add_paragraph()
-            
-            p.add_run()
-            p.level = 0
-            p.text = contentObject["content"]
-            p.font.name = config.FONT_FAMILY
-            p.font.size = Pt(config.PARAGRAPH_FONT_SIZE)
-            p.space_after = Pt(config.PARAGRAPH_FONT_SIZE)
-            
+            for line in  contentObject["content"].replace('\n','@(br)').split('@(br)'):
+                p = tf.add_paragraph()
+                p.text = line.strip()
+                p.level = 0
+                p.font.size = Pt(12)
+                p.font.name = config.FONT_FAMILY
+                p.font.size = Pt(config.PARAGRAPH_FONT_SIZE)
+                p.space_after = Pt(config.PARAGRAPH_FONT_SIZE)
 
         if contentObject["contentType"] == "image":
-            slideShape.add_picture(contentObject["imagePath"], width / 2, 3 * height / 5, width / 2)
+            slideShape.add_picture(contentObject["imagePath"], width / 4, 3 * height / 5, None, height / 5)
+            
         if contentObject["contentType"] == "table":
             rows, columns = len(contentObject["dataFrame"]), len(contentObject["dataFrame"][0])
             x, y, cx, cy = Inches(2), Inches(2), Inches(4), Inches(1.5)
