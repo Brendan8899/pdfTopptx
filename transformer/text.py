@@ -27,6 +27,11 @@ def chopText(text, maxWordPerPage):
 
 def chopTextObject(textObject, initialOffset = 0, maxWordPerPage = config.MAX_WORD_PER_PAGE_DEFAULT):
     chopedSentence = chopText(textObject["content"], maxWordPerPage)
+    try:
+        chopedSentence.remove('')
+    except ValueError:
+        pass
+    
     offset = len(chopedSentence) 
     return [
     {

@@ -1,3 +1,6 @@
 output/
 **/__pycache__/
 tmp/
+output.pptx
+test.pptx
+test/

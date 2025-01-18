@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from pptx import Presentation
 from pptx.util import Inches, Pt, Centipoints
 from pptx.enum.text import PP_ALIGN, MSO_AUTO_SIZE
-import config
+import pdfTopptx.config as config
 import pptx
 # ContentObject := Text | Image | ...
 # Assume that objectList is sorted by page & coordinates
@@ -22,7 +22,13 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
     height = prs.slide_height
     slideShape = None
     tf = None
+<<<<<<< HEAD
     
+=======
+    # flags
+    isAddText = False
+    isAddImage = False
+>>>>>>> cd2d604ddb4a398741cb0e3a93a0c0b4238479e0
     for contentObject in contentObjectList:
 
         if (currentPage != contentObject["pageNumber"]): #update page number
@@ -33,21 +39,36 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
             txBox = slideShape.add_textbox(width / 10, height / 6, 4 * width / 5, 0)
             tf = txBox.text_frame
             tf.word_wrap  = True
+<<<<<<< HEAD
             graphic_frame = None
+=======
+            isAddText = False
+            isAddImage = False
             
+>>>>>>> cd2d604ddb4a398741cb0e3a93a0c0b4238479e0
+            
+        
         if contentObject["contentType"] == "text":
-            for line in  contentObject["content"].replace('\n','@(br)').split('@(br)'):
-                p = tf.add_paragraph()
-                p.text = line.strip()
-                p.level = 0
-                p.font.size = Pt(12)
-                p.font.name = config.FONT_FAMILY
-                p.font.size = Pt(config.PARAGRAPH_FONT_SIZE)
-                p.space_after = Pt(config.PARAGRAPH_FONT_SIZE)
+            isAddText = True
+            for line in contentObject["content"].strip().replace('\n','@(br)').split('@(br)'):
+                if (line != ''):
+                    p = tf.add_paragraph()
+                    p.text = ' '.join(line.split()).replace('.', '. ').strip()
+                    p.level = 0
+                    p.font.size = Pt(12)
+                    p.font.name = config.FONT_FAMILY
+                    p.font.size = Pt(config.PARAGRAPH_FONT_SIZE)
+                    p.space_after = Pt(config.PARAGRAPH_FONT_SIZE)
+
 
         if contentObject["contentType"] == "image":
-            slideShape.add_picture(contentObject["imagePath"], width / 4, 3 * height / 5, None, height / 5)
-            
+            isAddImage = True
+            if (isAddText):
+                slideShape.add_picture(contentObject["imagePath"], width / 4, 3 * height / 5, None, height / 5)
+            else:
+                slideShape.add_picture(contentObject["imagePath"], width / 4, height / 4, None, height / 2)
+                
+                
         if contentObject["contentType"] == "table":
             if not testForExistingTable(graphic_frame):
                 rows, columns = len(contentObject["dataFrame"]), len(contentObject["dataFrame"][0])

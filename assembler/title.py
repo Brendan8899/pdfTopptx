@@ -1,5 +1,5 @@
 from pptx import Presentation
-import config 
+import pdfTopptx.config  as config
 prs = Presentation()
 
 
@@ -14,5 +14,5 @@ def addFirstPage(prs):
     title.text_frame.paragraphs[0].font.name = config.FONT_FAMILY
     subtitle.text_frame.paragraphs[0].font.name = config.FONT_FAMILY # fix: not working
     
-    title.text = config.TITLE
-    subtitle.text = config.SUBTITLE
+    title.text_frame.paragraphs[0].text = config.TITLE
+    subtitle.text_frame.paragraphs[0].text = config.SUBTITLE
