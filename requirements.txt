@@ -1,3 +1,2 @@
-pdfminer-six
-typing
-python-pptx
+pdfminer.six==20240706
+python_pptx==1.0.2
