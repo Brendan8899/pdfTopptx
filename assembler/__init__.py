@@ -49,6 +49,6 @@ def assemble(contentObjectList, outputFileName): # [] ContentObject
             for i in range(rows):
                 for j in range(columns):
                     cell = table.cell(i, j)
-                    cell.text = str(contentObject["dataFrame"].iat[i, j])
+                    cell.text = str(contentObject["dataFrame"][i][j])
 
     prs.save(outputFileName)

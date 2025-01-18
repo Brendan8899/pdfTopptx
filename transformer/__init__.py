@@ -27,10 +27,10 @@ class Transformer:
             if (contentObject["contentType"] == "image"):
                 contentObject["pageNumber"] +=  self.offset
                 self.transformedList.append(contentObject)
-                '''
-                if (self.matchTypeNext("text")):
-                    self.offset += 1
-                ''' 
+            
+            if (contentObject["contentType"] == "table"):
+                contentObject["pageNumber"] += self.offset
+                self.transformedList.append(contentObject)
             self.index += 1
             
     def matchTypeNext(self, targetType: str) -> bool:
